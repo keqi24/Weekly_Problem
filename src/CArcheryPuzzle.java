@@ -6,8 +6,9 @@ import java.util.StringTokenizer;
 
 /**
  * Created by qux on 17/9/15.
+ * https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=861&page=show_problem&problem=4705
  */
- class Main {
+ class CArcheryPuzzle {
 
     private static final int MAX = 10000;
 
@@ -51,7 +52,7 @@ import java.util.StringTokenizer;
                     min[i] = currentMin + 1;
                     ArrayList<Integer> resultI = new ArrayList<>();
                     resultI.add(P[selectedJ]);
-                    resultI.addAll(result[i-P[selectedJ]]);
+                    resultI.addAll(result[i - P[selectedJ]]);
                     result[i] = resultI;
                 }
             }
