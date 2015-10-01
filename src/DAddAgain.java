@@ -47,7 +47,7 @@ import java.util.StringTokenizer;
             for (int i=0; i<N; ++i) {
                 count[data[i]]++;
             }
-            long times = factorial[N];
+            long times = factorial[N - 1];
             for (int i=0; i<10; ++i) {
                 times = times / factorial[count[i]];
             }
@@ -59,7 +59,7 @@ import java.util.StringTokenizer;
 
             BigInteger result = BigInteger.valueOf(0);
             BigInteger ten = BigInteger.valueOf(10);
-            BigInteger num = BigInteger.valueOf(times).multiply(BigInteger.valueOf(sum)).divide(BigInteger.valueOf(N));
+            BigInteger num = BigInteger.valueOf(times).multiply(BigInteger.valueOf(sum));
             for (int i=0; i<N; ++i) {
                 result = result.multiply(ten).add(num);
             }
