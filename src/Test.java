@@ -3,7 +3,10 @@
  */
 public class Test {
     public static void main(String[] args) {
-        System.out.println(Long.MAX_VALUE);
+        double time = 0.6905;
+
+        time = (double)(Math.round(time*1000)/1000.0d);
+        System.out.println(time);
     }
 
 
