@@ -1,9 +1,11 @@
+import javax.sound.midi.SysexMessage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 /**
@@ -24,53 +26,65 @@ import java.util.StringTokenizer;
 
     public static void execute() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        int[] factorial = new int[13];
-        factorial[0] = 1;
-        for (int i=1; i<13; ++i) {
-            factorial[i] = factorial[i-1] * i;
-        }
+        int caze = 1;
+        int N = 0;
+        double D = 0.0;
+        double[] data = new double[10001];
 
-        int N;
-        int[] data = new int[12];
-        int[] count = new int[10];
         while (true) {
             N = readInt(reader);
             if (N == 0) {
                 break;
-            } else if (N == 1) {
-                System.out.println(readInt(reader));
+            }
+
+            for (int i=0; i<N; ++i) {
+                data[i] = readDouble(reader);
+            }
+            D = readDouble(reader);
+
+            if (N == 1) {
+                System.out.printf("Case %d: %.3f\n", caze, 0f);
                 continue;
             }
 
-            for (int i=0; i<10; ++i) {
-                count[i] = 0;
+            Arrays.sort(data, 0, N);
+            int index = 1;
+            double time = 0;
+            double newPosition = data[0];
+            while(index < N )
+            {
+                double distance = data[index] - newPosition;
+                if (distance > D)
+                {
+                    double tmpTime = (distance - time - D) / 2;
+                    if (tmpTime >= 0)
+                    {
+                        time += tmpTime;
+                        newPosition = data[index] - time;
+                    } else
+                    {
+                        newPosition += D;
+                    }
+                } else if (distance < D)
+                {
+                    newPosition += (distance + time) < D ? (distance + time) : D;
+                } else
+                {
+                    newPosition += D;
+                }
+                ++index;
             }
-            readIntArray(reader, data, N);
-            for (int i=0; i<N; ++i) {
-                count[data[i]]++;
-            }
-            long times = factorial[N];
-            for (int i=0; i<10; ++i) {
-                times = times / factorial[count[i]];
-            }
-
-            long sum = 0;
-            for (int i=0; i<N; ++i) {
-                sum += data[i];
-            }
-
-            long result = 0;
-            long num = times * sum / N;
-
-            for (int i=0; i<N; ++i) {
-                result = result * 10 + num;
-            }
-            System.out.println(result);
+            System.out.printf("Case %d: %.3f\n", caze, time);
+            caze++;
         }
     }
 
     public static int readInt(BufferedReader reader) throws IOException {
         return Integer.parseInt(reader.readLine().trim());
+    }
+
+    public static double readDouble(BufferedReader reader) throws IOException {
+        return Double.parseDouble(reader.readLine().trim());
     }
 
     public static int[] readIntArray(BufferedReader reader, int count) throws IOException {
@@ -89,4 +103,12 @@ import java.util.StringTokenizer;
             array[i] = Integer.parseInt(tokenizer.nextToken());
         }
     }
+
+    public static void printArray(double[] array, int start, int end) {
+        for (int i=start; i<end; ++i) {
+            System.out.println(array[i]);
+        }
+        System.out.println();
+    }
+
 }
