@@ -1,8 +1,9 @@
+import com.sun.tools.internal.xjc.reader.gbind.Graph;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * Created by qux on 23/9/15.
@@ -21,58 +22,59 @@ class Main {
 
     public static void execute() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        int caze = 1;
         int N = 0;
-        double D = 0.0;
-//        double[] data = new double[10001];
-
+        int M = 0;
+        int caze = 1;
         while (true) {
             N = readInt(reader);
             if (N == 0) {
                 break;
             }
-            double[] data = new double[N];
 
-            for (int i = 0; i < N; ++i) {
-                data[i] = readDouble(reader);
-            }
-            D = readDouble(reader);
-
-            if (N == 1) {
-                System.out.printf("Case %d: %.3f\n", caze, 0f);
-                caze++;
-                continue;
+            String[] data = new String[N];
+            for (int i=0; i<N; ++i) {
+                data[i] = readString(reader);
             }
 
-            Arrays.sort(data);
+            HashMap<String, HashSet<String>> map = new HashMap<>();
 
-            int index = 1;
-            double time = 0;
-            double newPosition = data[0];
-            while (index < N) {
-                double distance = data[index] - newPosition;
-                if (distance > D) {
-                    double tmpTime = (distance - time - D) / 2.0d;
-                    if (tmpTime >= 0.0) {
-                        time += tmpTime;
-                        newPosition += tmpTime;
-                    }
-                    newPosition += D;
-
-                } else if (distance < D) {
-                    newPosition += (distance + time) < D ? (distance + time) : D;
-                } else {
-                    newPosition += D;
+            M = readInt(reader);
+            for (int i=0; i<M; ++i) {
+                String[] pair = readStringArray(reader);
+                HashSet<String> bigSet = map.get(pair[0]);
+                if (bigSet == null) {
+                    bigSet = new HashSet<>();
+                    map.put(pair[0], bigSet);
                 }
-                ++index;
+                bigSet.add(pair[1]);
             }
-            System.out.printf("Case %d: %.3f\n", caze, time);
-            caze++;
+
+            Iterator<Map.Entry<String, HashSet<String>>> iter = map.entrySet().iterator();
+            while (iter.hasNext()) {
+                Map.Entry<String, HashSet<String>> entry = iter.next();
+                String key = entry.getKey();
+                HashSet<String> set = entry.getValue();
+                Iterator<String> setIter = set.iterator();
+                HashSet<String> tmpSet = new HashSet<>();
+                while (setIter.hasNext()) {
+                }
+            }
+
+
         }
+
     }
 
     public static int readInt(BufferedReader reader) throws IOException {
         return Integer.parseInt(reader.readLine().trim());
+    }
+
+    public static String readString(BufferedReader reader) throws IOException {
+        return reader.readLine().trim();
+    }
+
+    public static String[] readStringArray(BufferedReader reader) throws IOException {
+        return reader.readLine().trim().split(" ");
     }
 
     public static double readDouble(BufferedReader reader) throws IOException {

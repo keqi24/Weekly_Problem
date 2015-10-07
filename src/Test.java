@@ -1,12 +1,10 @@
+import com.sun.tools.internal.xjc.reader.gbind.Graph;
+
 /**
  * Created by Derek on 14/9/15.
  */
 public class Test {
     public static void main(String[] args) {
-        double time = 0.6905;
-
-        time = (double)(Math.round(time*1000)/1000.0d);
-        System.out.println(time);
     }
 
 
@@ -16,5 +14,9 @@ public class Test {
             result = result * i;
         }
         return result;
+    }
+
+    public static void testGraph() {
+        Graph graph = new Graph(7, false);
     }
 }
