@@ -1,10 +1,18 @@
-import com.sun.tools.internal.xjc.reader.gbind.Graph;
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+import com.sun.corba.se.impl.orbutil.graph.GraphImpl;
+
+import java.util.Date;
 
 /**
  * Created by Derek on 14/9/15.
  */
 public class Test {
     public static void main(String[] args) {
+        System.out.println(System.currentTimeMillis());
+
+        Date date = new Date();
+        System.out.println(date.toGMTString());
+
     }
 
 
@@ -17,6 +25,6 @@ public class Test {
     }
 
     public static void testGraph() {
-        Graph graph = new Graph(7, false);
+        Graph graph = new GraphImpl();
     }
 }
