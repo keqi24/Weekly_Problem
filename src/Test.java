@@ -2,16 +2,16 @@ import com.sun.corba.se.impl.orbutil.graph.Graph;
 import com.sun.corba.se.impl.orbutil.graph.GraphImpl;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by Derek on 14/9/15.
  */
 public class Test {
     public static void main(String[] args) {
-        System.out.println(System.currentTimeMillis());
-
-        Date date = new Date();
-        System.out.println(date.toGMTString());
+        long l = 1000L;
+        Object c = l;
+        System.out.println((c instanceof Long) + "");
 
     }
 

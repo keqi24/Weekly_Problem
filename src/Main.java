@@ -1,5 +1,3 @@
-import com.sun.tools.internal.xjc.reader.gbind.Graph;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,109 +23,54 @@ class Main {
         int N = 0;
         int M = 0;
         int caze = 0;
-        while (true) {
-            N = readInt(reader);
+        String line = null;
+        while ((line = readStringNoTrim(reader)) != null) {
+            N = Integer.parseInt(line);
 
             ++caze;
 
-            HashMap<String, Integer> indexMap = new HashMap<>();
             String[] data = new String[N];
-            String[] result = new String[N];
+            int[][] graph = new int[N][N];
+            int[] bigEdge = new int[N];
+            HashMap<String, Integer> indexMap = new HashMap<>();
             for (int i=0; i<N; ++i) {
                 data[i] = readString(reader);
                 indexMap.put(data[i], i);
             }
 
-            Map<String, Set<String>> biggerMap = new HashMap<>();
-            Map<String, Set<String>> smallerMap = new HashMap<>();
-            for (int i=0; i<N; ++i) {
-                biggerMap.put(data[i], new HashSet<String>());
-                smallerMap.put(data[i], new HashSet<String>());
-            }
-
             M = readInt(reader);
             for (int i=0; i<M; ++i) {
                 String[] pair = readStringArray(reader);
-                Set<String> bigSet = biggerMap.get(pair[0]);
-                bigSet.add(pair[1]);
-
-                Set<String> smallSet = smallerMap.get(pair[1]);
-                smallSet.add(pair[0]);
-            }
-
-            Set<String> bigFinishedSet = new HashSet<>();
-            Set<String> smallFinishedSet = new HashSet<>();
-
-            for (String str : data) {
-                fillSet(str, biggerMap, bigFinishedSet);
-                fillSet(str, smallerMap, smallFinishedSet);
-            }
-
-            for (int i=0; i<N; ++i) {
-                System.out.println(data[i] + ":" + biggerMap.get(data[i]).toString());
-                System.out.println(data[i] + ":" + smallerMap.get(data[i]).toString());
-            }
-
-            Set<String> bigSet;
-            Set<String> smallSet;
-            for (int i=0; i<N; ++i) {
-                int resultIndex = 0;
-                String dataStr = data[i];
-                int dataIndex = indexMap.get(dataStr);
-                String tmpStr;
-                bigSet = biggerMap.get(dataStr);
-                smallSet = smallerMap.get(dataStr);
-                for (int j=0; j<dataIndex; ++j) {
-                    tmpStr =  data[j];
-                    if (bigSet.contains(tmpStr) || smallSet.contains(tmpStr)) {
-                        continue;
-                    }
-
-                }
-                for (int j=dataIndex+1; j<N; ++j) {
-                    tmpStr = data[j];
-                    if (bigSet.contains(tmpStr) || smallSet.contains(tmpStr)) {
-                        continue;
-                    }
-                    bigSet.add(tmpStr);
-                    bigSet.addAll(biggerMap.get(tmpStr));
+                if (graph[indexMap.get(pair[0])][indexMap.get(pair[1])] != 1) {
+                    graph[indexMap.get(pair[0])][indexMap.get(pair[1])] = 1;
+                    bigEdge[indexMap.get(pair[1])]++;
                 }
             }
 
-            System.out.println("------------------------------");
-            for (int i=0; i<N; ++i) {
-                System.out.println(data[i] + ":" + biggerMap.get(data[i]).toString());
-                System.out.println(data[i] + ":" + smallerMap.get(data[i]).toString());
-            }
-            System.out.println("------------------------------");
-            for (int i=0; i<N; ++i) {
-                result[smallerMap.get(data[i]).size()] = data[i];
-            }
-
-
-            for (int i=0; i<N; ++i) {
-                String dataStr = data[i];
-                int dataIndex = indexMap.get(dataStr);
-                int resultIndex = 0;
-                for (int j=0; j<dataIndex; ++j) {
-                    if (biggerMap.get(dataStr).contains(data[j])) {
-                        continue;
-                    }
-                    ++resultIndex;
-                }
-                for (int j=dataIndex+1; j<N; ++j) {
-                    if (smallerMap.get(dataStr).contains(data[j])) {
-                        ++resultIndex;
-                    }
-                }
-
-                result[resultIndex] = dataStr;
-            }
+            int[] processed = new int[N];
             StringBuilder sb = new StringBuilder();
             sb.append("Case #").append(caze).append(": Dilbert should drink beverages in this order:");
+            TreeSet<Integer> set = new TreeSet<>();
             for (int i=0; i<N; ++i) {
+                if (bigEdge[i] == 0) {
+                    processed[i] = 1;
+                    set.add(i);
+                }
+            }
+            while (!set.isEmpty()) {
+                Integer first = set.first();
+                set.remove(first);
                 sb.append(" ");
-                sb.append(result[i]);
+                sb.append(data[first]);
+                for (int i=0; i<N; ++i) {
+                    if (graph[first][i] == 1) {
+                        bigEdge[i]--;
+                        if (processed[i] != 1 && bigEdge[i] == 0) {
+                            processed[i] = 1;
+                            set.add(i);
+                        }
+                    }
+                }
             }
             sb.append(".");
             System.out.println(sb.toString());
@@ -136,29 +79,8 @@ class Main {
                 break;
             }
         }
-
     }
 
-    //Case #1: Dilbert should drink beverages in this order: beer wine vodka.
-    private static Set<String> fillSet(String key, Map<String, Set<String>> map, Set<String> finishedSet) {
-        Set<String> mainSet = map.get(key);
-        if (finishedSet.contains(key)) {
-            return mainSet;
-        }
-        if (mainSet.size() == 0) {
-            finishedSet.add(key);
-            return mainSet;
-        }
-
-        Set<String> tmpSet = new HashSet<>();
-        for (String str : mainSet) {
-            tmpSet.addAll(fillSet(str, map, finishedSet));
-        }
-        mainSet.addAll(tmpSet);
-
-        finishedSet.add(key);
-        return mainSet;
-    }
 
     public static int readInt(BufferedReader reader) throws IOException {
         return Integer.parseInt(reader.readLine().trim());

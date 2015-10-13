@@ -4,9 +4,11 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /**
- * Created by Derek on 7/10/15.
+ * Created by qux on 23/9/15.
+ * https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=78&page=show_problem&problem=2717
  */
-public class FBeverages {
+class Main2 {
+
 
     public static void main(String args[]) {
         try {
@@ -22,51 +24,49 @@ public class FBeverages {
         int M = 0;
         int caze = 0;
         String line = null;
-        while ((line = readStringNoTrim(reader)) != null) {
+        while ((line = readString(reader)) != null) {
             N = Integer.parseInt(line);
 
             ++caze;
 
             String[] data = new String[N];
-            int[][] graph = new int[N][N];
-            int[] bigEdge = new int[N];
+            List<Integer> dataList = new LinkedList<>();
             HashMap<String, Integer> indexMap = new HashMap<>();
             for (int i=0; i<N; ++i) {
                 data[i] = readString(reader);
+                dataList.add(i);
                 indexMap.put(data[i], i);
             }
 
+
             M = readInt(reader);
+            HashMap<Integer, List<Integer>> bigMap = new LinkedHashMap<>(N);
+            HashMap<Integer, List<Integer>> smallMap = new LinkedHashMap<>(N);
+            for (int i=0; i<N; ++i) {
+                bigMap.put(i, new LinkedList<Integer>());
+                smallMap.put(i, new LinkedList<Integer>());
+            }
             for (int i=0; i<M; ++i) {
                 String[] pair = readStringArray(reader);
-                graph[indexMap.get(pair[0])][indexMap.get(pair[1])] = 1;
-                bigEdge[indexMap.get(pair[1])]++;
+                bigMap.get(indexMap.get(pair[0])).add(indexMap.get(pair[1]));
+                smallMap.get(indexMap.get(pair[1])).add(indexMap.get(pair[0]));
             }
 
-            int[] processed = new int[N];
+//            for (int i=0; i<N; ++i) {
+//                System.out.println(i + ":" + bigMap.get(i));
+//                System.out.println(i + ":" + smallMap.get(i));
+//            }
+
+            List<Integer> resultList = new LinkedList<>();
+            int[] proccedIndex = new int[N];
+            fillLinkedList(-1, resultList, dataList, bigMap, smallMap, proccedIndex);
+
+
             StringBuilder sb = new StringBuilder();
             sb.append("Case #").append(caze).append(": Dilbert should drink beverages in this order:");
-            TreeSet<Integer> queue = new TreeSet<>();
-            for (int i=0; i<N; ++i) {
-                if (bigEdge[i] == 0) {
-                    processed[i] = 1;
-                    queue.add(i);
-                }
-            }
-            while (!queue.isEmpty()) {
-                Integer first = queue.first();
-                queue.remove(first);
+            for (int index : resultList) {
                 sb.append(" ");
-                sb.append(data[first]);
-                for (int i=0; i<N; ++i) {
-                    if (graph[first][i] == 1) {
-                        bigEdge[i]--;
-                    }
-                    if (processed[i] != 1 && bigEdge[i] == 0) {
-                        processed[i] = 1;
-                        queue.add(i);
-                    }
-                }
+                sb.append(data[index]);
             }
             sb.append(".");
             System.out.println(sb.toString());
@@ -75,6 +75,7 @@ public class FBeverages {
                 break;
             }
         }
+
     }
 
 
@@ -124,7 +125,6 @@ public class FBeverages {
         for (Integer index : data) {
             if (smallMap.get(index).size() == 0) {
                 tmpList.add(index);
-//                System.out.println("add index:" + index);
                 proccedIndex[index] = 1;
             }
         }
@@ -136,7 +136,6 @@ public class FBeverages {
                 smallMap.get(bigIndex).remove(resultData);
                 if (proccedIndex[bigIndex] != 1 && smallMap.get(bigIndex).size() == 0) {
                     proccedIndex[bigIndex] = 1;
-//                    System.out.println("add index:" + bigIndex);
                     tmpList.add(bigIndex);
                 }
             }
@@ -237,4 +236,5 @@ public class FBeverages {
         }
         System.out.println();
     }
+
 }
