@@ -65,15 +65,16 @@ class Main {
                 for (int i=0; i<N; ++i) {
                     if (graph[first][i] == 1) {
                         bigEdge[i]--;
-                        if (processed[i] != 1 && bigEdge[i] == 0) {
-                            processed[i] = 1;
-                            set.add(i);
-                        }
+                    }
+                    if (processed[i] != 1 && bigEdge[i] == 0) {
+                        processed[i] = 1;
+                        set.add(i);
                     }
                 }
             }
             sb.append(".");
             System.out.println(sb.toString());
+            System.out.println();
 
             if (readStringNoTrim(reader) == null) {
                 break;
