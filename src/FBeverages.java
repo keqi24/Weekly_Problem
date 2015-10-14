@@ -4,7 +4,13 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /**
- * Created by Derek on 7/10/15.
+ * https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2001
+ *
+ * Method1 : Topological sorting: https://en.wikipedia.org/wiki/Topological_sorting
+ *
+ * Method2 : solve it directly
+ *           scan the origin data from 0 to N
+ *
  */
 public class FBeverages {
 
@@ -39,23 +45,25 @@ public class FBeverages {
             M = readInt(reader);
             for (int i=0; i<M; ++i) {
                 String[] pair = readStringArray(reader);
-                graph[indexMap.get(pair[0])][indexMap.get(pair[1])] = 1;
-                bigEdge[indexMap.get(pair[1])]++;
+                if (graph[indexMap.get(pair[0])][indexMap.get(pair[1])] != 1) {
+                    graph[indexMap.get(pair[0])][indexMap.get(pair[1])] = 1;
+                    bigEdge[indexMap.get(pair[1])]++;
+                }
             }
 
             int[] processed = new int[N];
             StringBuilder sb = new StringBuilder();
             sb.append("Case #").append(caze).append(": Dilbert should drink beverages in this order:");
-            TreeSet<Integer> queue = new TreeSet<>();
+            TreeSet<Integer> set = new TreeSet<>();
             for (int i=0; i<N; ++i) {
                 if (bigEdge[i] == 0) {
                     processed[i] = 1;
-                    queue.add(i);
+                    set.add(i);
                 }
             }
-            while (!queue.isEmpty()) {
-                Integer first = queue.first();
-                queue.remove(first);
+            while (!set.isEmpty()) {
+                Integer first = set.first();
+                set.remove(first);
                 sb.append(" ");
                 sb.append(data[first]);
                 for (int i=0; i<N; ++i) {
@@ -64,12 +72,13 @@ public class FBeverages {
                     }
                     if (processed[i] != 1 && bigEdge[i] == 0) {
                         processed[i] = 1;
-                        queue.add(i);
+                        set.add(i);
                     }
                 }
             }
             sb.append(".");
             System.out.println(sb.toString());
+            System.out.println();
 
             if (readStringNoTrim(reader) == null) {
                 break;

@@ -4,8 +4,11 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /**
- * Created by qux on 23/9/15.
- * https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=78&page=show_problem&problem=2717
+ * https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2001
+ *
+ * Topological sorting: https://en.wikipedia.org/wiki/Topological_sorting
+ *
+ *
  */
 class Main {
 
