@@ -23,71 +23,94 @@ class Main {
 
     public static void execute() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        int N = 0;
-        int M = 0;
-        int caze = 0;
-        String line = null;
-        while ((line = readStringNoTrim(reader)) != null) {
-            N = Integer.parseInt(line);
-
-            ++caze;
-
-            String[] data = new String[N];
-            int[][] graph = new int[N][N];
-            int[] bigEdge = new int[N];
-            HashMap<String, Integer> indexMap = new HashMap<>();
-            for (int i=0; i<N; ++i) {
-                data[i] = readString(reader);
-                indexMap.put(data[i], i);
+            List<int[]> data = new ArrayList<>();
+            String line;
+            while ((line = readString(reader)) != null) {
+                if (line.equals("#")) {
+                    break;
+                }
+                char[] charArray = line.toCharArray();
+                int[] intArray = new int[charArray.length];
+                for (int i=0; i<charArray.length; ++i) {
+                    intArray[i] = charArray[i] - 'A';
+                }
+                data.add(intArray);
             }
 
-            M = readInt(reader);
-            for (int i=0; i<M; ++i) {
-                String[] pair = readStringArray(reader);
-                if (graph[indexMap.get(pair[0])][indexMap.get(pair[1])] != 1) {
-                    graph[indexMap.get(pair[0])][indexMap.get(pair[1])] = 1;
-                    bigEdge[indexMap.get(pair[1])]++;
+            Set<Integer> letters = new HashSet<>();
+
+            for (int[] array : data) {
+                for (int c : array) {
+                    letters.add(c);
                 }
             }
 
-            int[] processed = new int[N];
-            StringBuilder sb = new StringBuilder();
-            sb.append("Case #").append(caze).append(": Dilbert should drink beverages in this order:");
-            TreeSet<Integer> set = new TreeSet<>();
-            for (int i=0; i<N; ++i) {
-                if (bigEdge[i] == 0) {
-                    processed[i] = 1;
-                    set.add(i);
-                }
-            }
-            while (!set.isEmpty()) {
-                Integer first = set.first();
-                set.remove(first);
-                sb.append(" ");
-                sb.append(data[first]);
-                for (int i=0; i<N; ++i) {
-                    if (graph[first][i] == 1) {
-                        bigEdge[i]--;
-                    }
-                    if (processed[i] != 1 && bigEdge[i] == 0) {
-                        processed[i] = 1;
-                        set.add(i);
+            int[][] graph = new int[26][26];
+            int[] bigEdge = new int[26];
+            int[] processed = new int[26];
+
+            fillGraph(data, 0, data.size(), 0, graph, bigEdge);
+
+            while (true) {
+                int printData = -1;
+                for (int num : letters) {
+                    if (bigEdge[num] == 0 && processed[num] != 1) {
+                        System.out.print((char)(num + 'A'));
+                        processed[num] = 1;
+                        printData = num;
+
+                        for (int j : letters) {
+                            if (graph[num][j] == 1) {
+                                bigEdge[j]--;
+                            }
+                        }
+                        break;
                     }
                 }
+                if (printData < 0) {
+                    break;
+                }
             }
-            sb.append(".");
-            System.out.println(sb.toString());
-            System.out.println();
-
-            if (readStringNoTrim(reader) == null) {
-                break;
-            }
-        }
     }
 
 
-    public static int readInt(BufferedReader reader) throws IOException {
-        return Integer.parseInt(reader.readLine().trim());
+    public static void fillGraph(List<int[]> data,  int start, int end, int index, int[][] graph, int[] bigEdge) {
+        int previousIndex = start;
+        int previous = -1;
+        for (int i=start; i<end; ++i) {
+            int[] array = data.get(i);
+            if (array.length > index) {
+                previousIndex = i;
+                previous = array[index];
+                break;
+            }
+        }
+        if (previous == -1) {
+            return;
+        }
+        for (int i=previousIndex+1; i<end; ++i) {
+            int [] array = data.get(i);
+            if (array.length > index && array[index] != previous) {
+                int current = array[index];
+                if (graph[previous][current] != 1) {
+                    graph[previous][current] = 1;
+                    bigEdge[current]++;
+                }
+                fillGraph(data, previousIndex, i, index+1, graph, bigEdge);
+                previous = current;
+                previousIndex = i;
+            }
+        }
+        if (previousIndex < end-1) {
+            fillGraph(data, previousIndex, end, index+1, graph, bigEdge);
+        }
+    }
+
+    private static void printInt2Char(int[] array) {
+        for (int i : array) {
+            System.out.print((char)(i + 'A'));
+        }
+        System.out.println();
     }
 
     public static String readString(BufferedReader reader) throws IOException {
