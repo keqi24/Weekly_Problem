@@ -5,10 +5,12 @@ import java.util.*;
 
 /**
  * https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2001
- * <p/>
+ *
  * Topological sorting: https://en.wikipedia.org/wiki/Topological_sorting
+ *
+ *
  */
-class Main {
+class Main1 {
 
 
     public static void main(String args[]) {
@@ -21,75 +23,62 @@ class Main {
 
     public static void execute() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        int[][] graph = new int[100][100];
-        int[] bigEdge = new int[100];
-        int[] processed = new int[100];
-        Set<Integer> letters = new LinkedHashSet<>();
-        String line;
-        char[] previous;
-        {
-            line = readString(reader);
-            previous = line.toCharArray();
-            for (int i = 0; i < previous.length; ++i) {
-                int tmp = previous[i];
-                letters.add(tmp);
-            }
-        }
-
-        while ((line = readString(reader)) != null) {
-            if (line.equals("#")) {
-                break;
-            }
-            char[] charArray = line.toCharArray();
-            for (int i = 0; i < charArray.length; ++i) {
-                int tmp = charArray[i];
-                letters.add(tmp);
+            List<int[]> data = new ArrayList<>();
+            String line;
+            while ((line = readString(reader)) != null) {
+                if (line.equals("#")) {
+                    break;
+                }
+                char[] charArray = line.toCharArray();
+                int[] intArray = new int[charArray.length];
+                for (int i=0; i<charArray.length; ++i) {
+                    intArray[i] = charArray[i] - 'A';
+                }
+                data.add(intArray);
             }
 
-            for (int i=0; i<previous.length && i<charArray.length; ++i) {
-                if (previous[i] != charArray[i]) {
-                    int pre = previous[i];
-                    int cur = charArray[i];
-                    if (graph[pre][cur] != 1) {
-                        graph[pre][cur] = 1;
-                        bigEdge[cur]++;
+            Set<Integer> letters = new HashSet<>();
+
+            for (int[] array : data) {
+                for (int c : array) {
+                    letters.add(c);
+                }
+            }
+
+            int[][] graph = new int[26][26];
+            int[] bigEdge = new int[26];
+            int[] processed = new int[26];
+
+            fillGraph(data, 0, data.size(), 0, graph, bigEdge);
+
+            int lettersSize = 0;
+            while (lettersSize < letters.size()) {
+                int printData = -1;
+                for (int num : letters) {
+                    if (bigEdge[num] == 0 && processed[num] != 1) {
+                        printData = num;
                         break;
                     }
                 }
-            }
 
-            previous = charArray;
-        }
+                processed[printData] = 1;
+                System.out.print((char)(printData + 'A'));
 
-        int lettersSize = 0;
-        while (lettersSize < letters.size()) {
-            int printData = 90;
-            for (int num : letters) {
-                if (bigEdge[num] == 0 && processed[num] != 1) {
-                    printData = num;
-                    break;
+                for (int j : letters) {
+                    if (graph[printData][j] == 1) {
+                        bigEdge[j]--;
+                    }
                 }
-            }
-//            if (printData < 0) {
-//                break;
-//            }
-            processed[printData] = 1;
-            System.out.print((char) (printData));
+                lettersSize++;
 
-            for (int j : letters) {
-                if (graph[printData][j] == 1) {
-                    bigEdge[j]--;
-                }
             }
-            lettersSize++;
-        }
     }
 
 
-    public static void fillGraph(List<int[]> data, int start, int end, int index, int[][] graph, int[] bigEdge) {
+    public static void fillGraph(List<int[]> data,  int start, int end, int index, int[][] graph, int[] bigEdge) {
         int previousIndex = start;
         int previous = -1;
-        for (int i = start; i < end; ++i) {
+        for (int i=start; i<end; ++i) {
             int[] array = data.get(i);
             if (array.length > index) {
                 previousIndex = i;
@@ -100,27 +89,27 @@ class Main {
         if (previous == -1) {
             return;
         }
-        for (int i = previousIndex + 1; i < end; ++i) {
-            int[] array = data.get(i);
+        for (int i=previousIndex+1; i<end; ++i) {
+            int [] array = data.get(i);
             if (array.length > index && array[index] != previous) {
                 int current = array[index];
                 if (graph[previous][current] != 1) {
                     graph[previous][current] = 1;
                     bigEdge[current]++;
                 }
-                fillGraph(data, previousIndex, i, index + 1, graph, bigEdge);
+                fillGraph(data, previousIndex, i, index+1, graph, bigEdge);
                 previous = current;
                 previousIndex = i;
             }
         }
-        if (previousIndex < end - 1) {
-            fillGraph(data, previousIndex, end, index + 1, graph, bigEdge);
+        if (previousIndex < end-1) {
+            fillGraph(data, previousIndex, end, index+1, graph, bigEdge);
         }
     }
 
     private static void printInt2Char(int[] array) {
         for (int i : array) {
-            System.out.print((char) (i + 'A'));
+            System.out.print((char)(i + 'A'));
         }
         System.out.println();
     }

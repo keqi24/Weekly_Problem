@@ -9,9 +9,8 @@ import java.util.Objects;
  */
 public class Test {
     public static void main(String[] args) {
-        long l = 1000L;
-        Object c = l;
-        System.out.println((c instanceof Long) + "");
+        char z = 'Z';
+        System.out.println((int)z);
 
     }
 
