@@ -9,7 +9,7 @@ import java.util.*;
  * <p/>
  * Topological sorting: https://en.wikipedia.org/wiki/Topological_sorting
  */
-class Main {
+class Main2 {
 
 
     public static void main(String args[]) {

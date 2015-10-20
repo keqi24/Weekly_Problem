@@ -12,6 +12,9 @@ public class Test {
         char z = 'Z';
         System.out.println((int)z);
 
+        String test = "test";
+        System.out.println(test.length());
+
     }
 
 
