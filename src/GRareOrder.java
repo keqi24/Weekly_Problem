@@ -1,7 +1,10 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 /**
  * https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2001
@@ -10,7 +13,7 @@ import java.util.*;
  *
  *
  */
-class Main1 {
+class GRareOrder {
 
 
     public static void main(String args[]) {
@@ -23,58 +26,69 @@ class Main1 {
 
     public static void execute() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            List<int[]> data = new ArrayList<>();
-            String line;
-            while ((line = readString(reader)) != null) {
-                if (line.equals("#")) {
-                    break;
-                }
-                char[] charArray = line.toCharArray();
-                int[] intArray = new int[charArray.length];
-                for (int i=0; i<charArray.length; ++i) {
-                    intArray[i] = charArray[i] - 'A';
-                }
-                data.add(intArray);
+        int N = 0;
+        int M = 0;
+        int caze = 0;
+        String line = null;
+        while ((line = readStringNoTrim(reader)) != null) {
+            N = Integer.parseInt(line);
+
+            ++caze;
+
+            String[] data = new String[N];
+            int[][] graph = new int[N][N];
+            int[] bigEdge = new int[N];
+            HashMap<String, Integer> indexMap = new HashMap<>();
+            for (int i=0; i<N; ++i) {
+                data[i] = readString(reader);
+                indexMap.put(data[i], i);
             }
 
-            Set<Integer> letters = new HashSet<>();
-
-            for (int[] array : data) {
-                for (int c : array) {
-                    letters.add(c);
+            M = readInt(reader);
+            for (int i=0; i<M; ++i) {
+                String[] pair = readStringArray(reader);
+                if (graph[indexMap.get(pair[0])][indexMap.get(pair[1])] != 1) {
+                    graph[indexMap.get(pair[0])][indexMap.get(pair[1])] = 1;
+                    bigEdge[indexMap.get(pair[1])]++;
                 }
             }
 
-            int[][] graph = new int[26][26];
-            int[] bigEdge = new int[26];
-            int[] processed = new int[26];
-
-            fillGraph(data, 0, data.size(), 0, graph, bigEdge);
-
-            int lettersSize = 0;
-            while (lettersSize < letters.size()) {
-                int printData = -1;
-                for (int num : letters) {
-                    if (bigEdge[num] == 0 && processed[num] != 1) {
-                        printData = num;
-                        break;
+            int[] processed = new int[N];
+            StringBuilder sb = new StringBuilder();
+            sb.append("Case #").append(caze).append(": Dilbert should drink beverages in this order:");
+            TreeSet<Integer> set = new TreeSet<>();
+            for (int i=0; i<N; ++i) {
+                if (bigEdge[i] == 0) {
+                    processed[i] = 1;
+                    set.add(i);
+                }
+            }
+            while (!set.isEmpty()) {
+                Integer first = set.first();
+                set.remove(first);
+                sb.append(" ");
+                sb.append(data[first]);
+                for (int i=0; i<N; ++i) {
+                    if (graph[first][i] == 1) {
+                        bigEdge[i]--;
+                    }
+                    if (processed[i] != 1 && bigEdge[i] == 0) {
+                        processed[i] = 1;
+                        set.add(i);
                     }
                 }
-
-                processed[printData] = 1;
-                System.out.print((char)(printData + 'A'));
-
-                for (int j : letters) {
-                    if (graph[printData][j] == 1) {
-                        bigEdge[j]--;
-                    }
-                }
-                lettersSize++;
-
             }
+            sb.append(".");
+            System.out.println(sb.toString());
+            System.out.println();
+
+            if (readStringNoTrim(reader) == null) {
+                break;
+            }
+        }
     }
 
-
+    //build graph using recursion, can't make sure is correct
     public static void fillGraph(List<int[]> data,  int start, int end, int index, int[][] graph, int[] bigEdge) {
         int previousIndex = start;
         int previous = -1;
@@ -107,11 +121,9 @@ class Main1 {
         }
     }
 
-    private static void printInt2Char(int[] array) {
-        for (int i : array) {
-            System.out.print((char)(i + 'A'));
-        }
-        System.out.println();
+
+    public static int readInt(BufferedReader reader) throws IOException {
+        return Integer.parseInt(reader.readLine().trim());
     }
 
     public static String readString(BufferedReader reader) throws IOException {
