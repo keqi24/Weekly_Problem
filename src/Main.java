@@ -23,76 +23,63 @@ class Main {
     public static void execute() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        boolean[][] graph = new boolean[26][26];
-        int[] incoming = new int[26];
-        boolean[] visited = new boolean[26];
-        boolean[] data = new boolean[26];
-
-        String previous = readString(reader);
-        for (int i=0; i<previous.length(); ++i) {
-            data[previous.charAt(i) - 'A'] = true;
-        }
-
         String line;
-        while (!(line = readString(reader)).equals("#")) {
-
-            for (int i=0; i<line.length(); ++i) {
-                data[line.charAt(i) - 'A'] = true;
+        int N;
+        int M;
+        while ( (line = readString(reader)) != null) {
+            String[] nums = line.split(" ");
+            N = Integer.valueOf(nums[0]) + 1;
+            M = Integer.valueOf(nums[1]) + 1;
+            int[] cam = new int[N];
+            for (int i=0; i<N; ++i) {
+                cam[i] = readInt(reader);
             }
 
-            int min = previous.length() < line.length() ? previous.length() : line.length();
-            for (int i=0; i<min; ++i) {
-                if (previous.charAt(i) != line.charAt(i)) {
-                    if (!graph[previous.charAt(i) - 'A'][line.charAt(i) - 'A']) {
-                        graph[previous.charAt(i) - 'A'][line.charAt(i) - 'A'] = true;
-                        incoming[line.charAt(i) - 'A']++;
-                    }
-                    break;
+            int biggest = cam[0];
+            for (int i=1; i<N; ++i) {
+                if (biggest < cam[i]) {
+                    biggest = cam[i];
                 }
             }
-
-            previous = line;
-        }
-
-
-        int count = 0;
-        for (int i=0; i<26; i++) {
-            if (data[i]) {
-                count++;
-            }
-        }
-        List<Character> result = new ArrayList<>();
-        while (count>0) {
-            for (int i=0; i<26; i++) {
-                if (data[i] && incoming[i] == 0 && !visited[i]) {
-                    result.add((char)(i + 'A'));
-                    visited[i] = true;
-
-                    for (int j=0; j<26; ++j) {
-                        if (data[i]) {
-                            if (graph[i][j]) {
-                                incoming[j]--;
-                            }
-                        }
-                    }
-                    count--;
+            while (true) {
+                if (isFit(N, M, cam, biggest)) {
                     break;
                 }
+                biggest++;
             }
+            System.out.println(biggest);
         }
-
-        for (char c : result) {
-            System.out.print(c);
-        }
-        System.out.println();
-
     }
+
+    public static boolean isFit(int N, int M, int[] cam, int testResult) {
+        int index = 0;
+        while (M > 0) {
+            int tmpSum = 0;
+            while (index < N) {
+                tmpSum += cam[index];
+                if (tmpSum < testResult) {
+                    index++;
+                }
+            }
+            M--;
+        }
+        if (M >= 0) {
+            return true;
+        }
+        return false;
+    }
+
+
 
     private static void printInt2Char(int[] array) {
         for (int i : array) {
             System.out.print((char) (i + 'A'));
         }
         System.out.println();
+    }
+
+    public static int readInt(BufferedReader reader) throws IOException {
+        return Integer.valueOf(reader.readLine());
     }
 
     public static String readString(BufferedReader reader) throws IOException {
