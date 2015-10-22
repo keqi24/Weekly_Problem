@@ -1,8 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.StringTokenizer;
 
 /**
  * https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=848
@@ -12,7 +11,7 @@ import java.util.*;
  * if fit get the result
  * else biggest++ and check it again
  */
-class Main {
+class HBackpackingtrip {
 
 
     public static void main(String args[]) {
