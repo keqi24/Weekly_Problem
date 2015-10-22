@@ -52,18 +52,23 @@ class Main {
     }
 
     public static boolean isFit(int N, int M, int[] cam, int testResult) {
+        System.out.println("check:" + testResult);
         int index = 0;
         while (M > 0) {
             int tmpSum = 0;
             while (index < N) {
                 tmpSum += cam[index];
-                if (tmpSum < testResult) {
+                System.out.println(tmpSum);
+                if (tmpSum <= testResult) {
                     index++;
+                }
+                if (tmpSum >= testResult) {
+                    break;
                 }
             }
             M--;
         }
-        if (M >= 0) {
+        if (index >= N) {
             return true;
         }
         return false;
