@@ -7,8 +7,11 @@ import java.util.StringTokenizer;
 /**
  * Created by qux on 23/9/15.
  * https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=78&page=show_problem&problem=2717
+ *
+ * Thought 2, using the binary search
+ * Just assume a result time, check if it ok. if ok binary search to smaller.
  */
-class EPhysicsExperiment {
+class W5_PhysicsExperiment {
 
 
     public static void main(String args[]) {

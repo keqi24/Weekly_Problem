@@ -7,7 +7,7 @@ import java.util.InputMismatchException;
  * Created by qux on 9/3/15.
  * https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&category=596&problem=4445&mosmsg=Submission+received+with+ID+1778416
  */
-class ANumberAssignment {
+class W1_NumberAssignment {
 
     public static void main(String args[]) {
         start();

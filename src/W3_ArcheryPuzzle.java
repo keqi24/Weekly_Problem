@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
  * Created by qux on 17/9/15.
  * https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=861&page=show_problem&problem=4705
  */
- class CArcheryPuzzle {
+ class W3_ArcheryPuzzle {
 
     private static final int MAX = 10000;
 

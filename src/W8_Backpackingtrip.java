@@ -5,13 +5,14 @@ import java.util.StringTokenizer;
 
 /**
  * https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=848
+ * A little same to the Weekly 5 problem
  * <p/>
  * Find the biggest distance from the N distances
  * From the biggest one to check if can fit the demand
  * if fit get the result
  * else biggest++ and check it again
  */
-class HBackpackingtrip {
+class W8_Backpackingtrip {
 
 
     public static void main(String args[]) {

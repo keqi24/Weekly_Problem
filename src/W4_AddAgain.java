@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
  * https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=2017
  *
  */
- class DAddAgain {
+ class W4_AddAgain {
 
 
     public static void main(String args[]) {

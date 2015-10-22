@@ -7,7 +7,7 @@ import java.util.concurrent.SynchronousQueue;
 /**
  * Created by qux on 9/14/15.
  */
-class BRadiation {
+class W2_Radiation {
 
     private static int MAX_R = 13000;
 
