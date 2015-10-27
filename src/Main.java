@@ -50,8 +50,9 @@ class Main {
             for (int n=1; n<N+1; ++n) {
                 for (int m=1; m<M+1; ++m) {
                     int min = 100000;
+                    int sum = 0;
                     for (int i=1; i<=n; ++i) {
-                        int sum = getSum(cam, n-i+1, n);
+                        sum += cam[n-i+1];
                         int tmp = Math.max(dp[n-i][m-1], sum);
                         if (tmp < min) {
                             min = tmp;

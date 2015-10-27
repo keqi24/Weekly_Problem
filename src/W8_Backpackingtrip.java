@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 
 /**
  * https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=848
- * A little same to the Weekly 5 problem
+ * Same to the Weekly 5 problem, even don't need to use binary search
  * <p/>
  * Find the biggest distance from the N distances
  * From the biggest one to check if can fit the demand
