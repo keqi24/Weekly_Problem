@@ -12,20 +12,8 @@ import java.util.UUID;
 public class Test {
     public static void main(String[] args) {
 
-        HashSet<Long> set = new HashSet<>();
-        int collisionCount = 0;
-        double data = Math.pow(2, 32);
-        System.out.println(data);
-        for (double i=0; i<100000000; i++) {
-            long tmp = UUID.randomUUID().getMostSignificantBits();
-            if (set.contains(tmp)) {
-                collisionCount++;
-            } else {
-                set.add(tmp);
-            }
-        }
+        System.out.println(String.format("D%4d%4d", 20, 1));
 
-        System.out.println("collision:" + collisionCount);
 
     }
 
