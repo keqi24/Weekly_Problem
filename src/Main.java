@@ -18,52 +18,71 @@ class Main {
         }
     }
 
+    static long[] power2 = new long[51];
+
+    static {
+        power2[0] = 1;
+        for (int i=1; i<51; ++i) {
+            power2[i] = 2 * power2[i-1];
+        }
+    }
+
 
     public static void execute() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String line;
         while ((line = readString(reader)) != null) {
-            String[] strArray = line.split(" +");
-            long N = Long.valueOf(strArray[0]);
-            long L = Long.valueOf(strArray[1]);
-            long U = Long.valueOf(strArray[2]);
+            String[] strArray = line.trim().split(" +");
 
-            System.out.println(getResult(N, L, U));
 
         }
     }
 
-
-    public static long getResult(long N, long L, long U) {
-        long result = 0;
-        boolean ignoreL = false;
-        boolean ignoreU = false;
-        for (long i=31; i>=0; --i) {
-            long mask = 1L << i;
-
-            long bitResult = 0;
-            long maskN = N & mask;
-            long maskL = L & mask;
-            long mastU = U & mask;
-
-            if (mastU == 0 && !ignoreU) {
-                bitResult = 0;
-            } else if (maskL == mask && !ignoreL){
-                bitResult = mask;
-            } else {
-                if (maskN == 0) {
-                    bitResult = mask;
-                    ignoreL = true;
-                } else {
-                    bitResult = 0;
-                    ignoreU = true;
-                }
-            }
-
-            result = result | bitResult;
+    private static void core(String lessStr, String moreStr) {
+        int lessSize = lessStr.length();
+        int[] less = new int[lessSize];
+        for (int i=0; i<lessSize; ++i) {
+            less[i] = Character.getNumericValue(lessStr.charAt(i));
         }
-        return result;
+
+        int moreSize = moreStr.length();
+        int[] more = new int[moreSize];
+        for (int i=0; i<moreSize; ++i) {
+            more[i] = Character.getNumericValue(moreStr.charAt(i));
+        }
+
+        int index = 0;
+
+
+        Cell[] result = new Cell[moreSize];
+
+        Cell cell = new Cell();
+        result[0] = cell;
+
+
+        while (index < lessSize) {
+            int lessItem = less[lessSize-1-index];
+            int moreItem = more[moreSize-1-index];
+
+            Cell cell = new Cell();
+
+
+            result[index] = cell;
+            index++;
+        }
     }
+
+    private static Cell getCell(int lessItem, int moreItem, int index, Cell preCell) {
+        
+    }
+
+
+    private static class Cell {
+        public int small;
+        public int mid;
+        public int big;
+    }
+
 
     public static int readInt(BufferedReader reader) throws IOException {
         return Integer.valueOf(reader.readLine());
