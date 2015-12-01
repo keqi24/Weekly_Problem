@@ -33,17 +33,12 @@ class Main {
         String line;
         while ((line = readString(reader)) != null) {
             String[] strArray = line.trim().split(" +");
-
-
+            System.out.println(core(strArray[0], strArray[1]));
         }
     }
 
-    private static void core(String lessStr, String moreStr) {
-        int lessSize = lessStr.length();
-        int[] less = new int[lessSize];
-        for (int i=0; i<lessSize; ++i) {
-            less[i] = Character.getNumericValue(lessStr.charAt(i));
-        }
+    private static long core(String lessStr, String moreStr) {
+        long result = 0;
 
         int moreSize = moreStr.length();
         int[] more = new int[moreSize];
@@ -51,36 +46,122 @@ class Main {
             more[i] = Character.getNumericValue(moreStr.charAt(i));
         }
 
+        int lessSize = lessStr.length();
+        int[] less = new int[moreSize];
         int index = 0;
-
-
-        Cell[] result = new Cell[moreSize];
-
-        Cell cell = new Cell();
-        result[0] = cell;
-
-
-        while (index < lessSize) {
-            int lessItem = less[lessSize-1-index];
-            int moreItem = more[moreSize-1-index];
-
-            Cell cell = new Cell();
-
-
-            result[index] = cell;
-            index++;
+        for (;index < moreSize-lessSize ; ++index) {
+            less[index] = 0;
         }
+        for (int i=0; i<lessSize; ++i, ++index) {
+            less[index] = Character.getNumericValue(lessStr.charAt(i));
+        }
+
+
+
+
+        Record current = new Record();
+        current.isLeadingZero = less[0] == 0;
+        for (int i=0; i<moreSize; ++i) {
+            Record pre = current;
+            current = new Record();
+            current.result = pre.result;
+            if (pre.isLeadingZero) {
+                if (less[i] == 0) {
+                    current.result += power2[moreSize - 1 -i];
+                    if (more[i] < 4) {
+                        current.result += 0;
+                    } else if (more[i] == 4 ) {
+                        current.result += getLessThanCurrent(more, i+1, moreSize);
+                    } else if (more[i] < 7) {
+                        current.result += power2[moreSize -1 -i];
+                    } else if (more[i] == 7) {
+                        current.result += power2[moreSize -1 -i];
+                        current.result += getLessThanCurrent(more, i+1, moreSize);
+                    } else {
+                        current.result += power2[moreSize -i];
+                    }
+                    continue;
+                } else {
+                    current.isLeadingZero = false;
+                    if (less[i] < 4 ) {
+                        current.result += power2[moreSize -i];
+                    } else if (less[i] == 4) {
+                        current.result += power2[moreSize - 1 -i];
+                        current.result += getMoreThanCurrent(less, i+1, moreSize);
+                    } else if (less[i] < 7) {
+                        current.result += power2[moreSize - 1 -i];
+                    } else if (less[i] == 7) {
+                        current.result += getMoreThanCurrent(less, i+1, moreSize);
+                    } else if (less[i] > 7) {
+                        current.result += 0;
+                    }
+                    break;
+                }
+            }
+        }
+        return current.result;
     }
 
-    private static Cell getCell(int lessItem, int moreItem, int index, Cell preCell) {
-        
+//    private static long[] calcLessThanArray(int[] array) {
+//        long[] lessThanArray = new long[array.length];
+//        lessThanArray[array.length -1] = 1;
+//        for (int i=array.length-1; i>0; --i) {
+//            if (array[i] < 4) {
+//                lessThanArray[i-1] = 0;
+//            } else if (array[i] < 7) {
+//                lessThanArray[i-1] = lessThanArray[i];
+//            } else {
+//                lessThanArray[i-1] = 2*lessThanArray[i];
+//            }
+//        }
+//        return lessThanArray;
+//    }
+//
+//    private static long[] calcMoreThanArray
+//
+    private static long getLessThanCurrent(int[] array, int startIndex, int endIndex) {
+        long result = 0;
+        for (int i=startIndex; i<endIndex; ++i) {
+            if (array[i] < 4) {
+                result += 0;
+            } else if (array[i] == 4) {
+                result += getLessThanCurrent(array, i+1, endIndex);
+            } else if (array[i] < 7) {
+                result += power2[endIndex - 1 - i];
+            } else if (array[i] == 7) {
+                result += power2[endIndex - 1 - i];
+                result += getLessThanCurrent(array, i+1, endIndex);
+            } else {
+                result += power2[endIndex - i];
+            }
+        }
+        return result;
+    }
+
+    private static long getMoreThanCurrent(int[] array, int startIndex, int endIndex) {
+        long result = 0;
+        for (int i=startIndex; i<endIndex; ++i) {
+            if (array[i] < 4) {
+                result += power2[endIndex - i];
+            } else if (array[i] == 4) {
+                result += power2[endIndex - 1 - i];
+                result += getMoreThanCurrent(array, i+1, endIndex);
+            } else if (array[i] < 7) {
+                result += power2[endIndex - 1 - i];
+            } else if (array[i] == 7) {
+                result += getMoreThanCurrent(array, i+1, endIndex);
+            } else {
+                result += 0;
+            }
+        }
+        return result;
     }
 
 
-    private static class Cell {
-        public int small;
-        public int mid;
-        public int big;
+
+    private static class Record {
+        public long result = 0;
+        public boolean isLeadingZero = true;
     }
 
 
