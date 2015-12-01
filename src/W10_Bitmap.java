@@ -1,13 +1,12 @@
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.StringTokenizer;
 
 /**
  * https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=119
  */
-class Main {
+class W10_Bitmap {
 
 
     public static void main(String args[]) {
