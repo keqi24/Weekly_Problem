@@ -1,8 +1,7 @@
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.*;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  * https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2829
@@ -10,7 +9,7 @@ import java.util.*;
  * notice:
  * This problem the input is not line by line, should using scanner to get input
  */
-class Main {
+class W12_CommandoWar {
 
 
     public static void main(String args[]) {

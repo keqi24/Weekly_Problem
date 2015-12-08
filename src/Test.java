@@ -18,9 +18,19 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Test {
     public static void main(String[] args) {
 
-        final TestCondition test = new TestCondition();
+        Child child = null;
 
-        test.secondLock();
+        System.out.println("hello:" + child.toString());
+
+    }
+
+
+    public static class Parent {
+        public int command = 10;
+    }
+
+    public static class Child extends Parent {
+        public static int command = 100;
     }
 
 
