@@ -47,25 +47,6 @@ class W12_CommandoWar {
 
             System.out.println("Case " + caze++ + ": " + totalTime);
 
-
-
-
-//            Arrays.sort(data, new Comparator<Data>() {
-//                @Override
-//                public int compare(Data o1, Data o2) {
-//                    if (o1.J < o2.J) {
-//                        return 1;
-//                    } else if (o1.J > o2.J) {
-//                        return -1;
-//                    } else {
-//                        return o1.B - o2.B;
-//                    }
-//                }
-//            });
-
-
-
-
         }
     }
 
@@ -83,6 +64,11 @@ class W12_CommandoWar {
             B[m+1] = tmpB;
         }
     }
+
+
+
+
+    
 
     public static int readInt(BufferedReader reader) throws IOException {
         return Integer.valueOf(reader.readLine());
