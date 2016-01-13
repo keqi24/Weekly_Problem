@@ -21,7 +21,8 @@ def check(sum, data):
         elif sum < d:
             continue
         else:
-            return check(sum-d, data[index:])
+            if check(sum-d, data[index:]):
+                return True
     return False
 
 
