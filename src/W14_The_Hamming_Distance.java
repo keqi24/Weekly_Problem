@@ -1,11 +1,12 @@
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  *  https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=9
  */
-class Main {
+class W14_The_Hamming_Distance {
 
 
     public static void main(String args[]) {
