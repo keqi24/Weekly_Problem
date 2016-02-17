@@ -5,7 +5,7 @@ import java.util.*;
 /**
  *  https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=691
  */
-class Main {
+class W15_Eight_Queen {
 
     private static final int N = 8;
     private static final int[] sData = new int[N];
