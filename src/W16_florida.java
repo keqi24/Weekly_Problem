@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- *  https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=691
+ *  https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=410
  */
-class Main {
+class W16_florida {
 
     private static final int N = 1000;
     private static final char[][] sData = new char[N][N];
